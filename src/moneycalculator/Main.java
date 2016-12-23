@@ -2,20 +2,15 @@ package moneycalculator;
 
 import moneycalculator.control.CalculateCommand;
 import moneycalculator.model.Currency;
+import moneycalculator.persistence.CurrencyListLoader;
+import moneycalculator.persistence.files.FileCurrencyListLoader;
 
 public class Main {
 
     public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame(currencies());
+        CurrencyListLoader loader = new FileCurrencyListLoader("currencies");
+        MainFrame mainFrame = new MainFrame(loader.currencies());
         mainFrame.add(new CalculateCommand(mainFrame.getMoneyDialog(), mainFrame.getMoneyDisplay()));
-    }
-
-    private static Currency[] currencies() {
-        return new Currency[]{
-            new Currency("USD", "Dolar USA", "$"),
-            new Currency("CAD", "Dolar canada", "$"),
-            new Currency("GBP", "Libra esterlina", "$")
-        };
     }
 
 }
