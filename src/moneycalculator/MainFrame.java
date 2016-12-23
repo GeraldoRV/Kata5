@@ -2,15 +2,29 @@ package moneycalculator;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import moneycalculator.control.Command;
+import moneycalculator.model.Currency;
+import moneycalculator.ui.MoneyDialog;
+import moneycalculator.ui.MoneyDisplay;
 import moneycalculator.ui.swing.SwingMoneyDialog;
 import moneycalculator.ui.swing.SwingMoneyDisplay;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
 
-    public MainFrame() {
+    private final Map<String, Command> commands = new HashMap<>();
+    private MoneyDialog moneyDialog;
+    private MoneyDisplay moneyDisplay;
+    private final Currency[] currencies;
+
+    public MainFrame(Currency[] currencies) {
+        this.currencies = currencies;
         this.setTitle("Money Calculator");
         this.setSize(400, 400);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -19,15 +33,31 @@ public class MainFrame extends JFrame{
         this.add(moneyDisplay(), BorderLayout.CENTER);
         this.add(toolbar(), BorderLayout.SOUTH);
         this.setVisible(true);
-        
+
+    }
+
+    public void add(Command command) {
+        commands.put(command.name(), command);
+    }
+
+    public MoneyDialog getMoneyDialog() {
+        return moneyDialog;
+    }
+
+    public MoneyDisplay getMoneyDisplay() {
+        return moneyDisplay;
     }
 
     private Component moneyDialog() {
-        return new SwingMoneyDialog();
+        SwingMoneyDialog dialog = new SwingMoneyDialog(currencies);
+        moneyDialog = dialog;
+        return dialog;
     }
 
     private Component moneyDisplay() {
-        return new SwingMoneyDisplay();
+        SwingMoneyDisplay display = new SwingMoneyDisplay();
+        moneyDisplay = display;
+        return display;
 
     }
 
@@ -39,7 +69,17 @@ public class MainFrame extends JFrame{
 
     private JButton calculateButton() {
         JButton button = new JButton("Calculate");
+        button.addActionListener(calculate());
         return button;
     }
-    
+
+    private ActionListener calculate() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                commands.get("calculate").execute();
+            }
+        };
+    }
+
 }

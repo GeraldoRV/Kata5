@@ -18,10 +18,12 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog {
 
     private Currency currency;
     private String amount;
+    private final Currency[] currencies;
 
-    public SwingMoneyDialog() {
+    public SwingMoneyDialog(Currency[] currencies) {
         this.add(amount());
         this.add(currency());
+        this.currencies = currencies;
     }
 
     @Override
@@ -38,26 +40,20 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog {
     }
 
     private Component currency() {
-        JComboBox combo = new JComboBox(currencies());
+        JComboBox combo = new JComboBox(currencies);
         combo.addItemListener(currencyChanged());
         currency = (Currency) combo.getSelectedItem();
         return combo;
 
     }
 
-    private Currency[] currencies() {
-        return new Currency[]{
-            new Currency("USD", "Dolar USA", "$"),
-            new Currency("CAD", "Dolar canada", "$"),
-            new Currency("GBP", "Libra esterlina", "$")
-        };
-    }
-
     private ItemListener currencyChanged() {
         return new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.DESELECTED) return;
+                if (e.getStateChange() == ItemEvent.DESELECTED) {
+                    return;
+                }
                 currency = (Currency) e.getItem();
             }
         };
@@ -83,8 +79,7 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog {
             private void amountChanged(Document document) {
                 try {
                     amount = document.getText(0, document.getLength());
-                } 
-                catch (BadLocationException ex) {
+                } catch (BadLocationException ex) {
                 }
             }
         };
