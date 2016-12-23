@@ -2,7 +2,6 @@ package moneycalculator;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.PopupMenu;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

@@ -1,6 +1,8 @@
 package moneycalculator.ui.swing;
 
+import java.awt.Component;
 import java.awt.PopupMenu;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import moneycalculator.model.Money;
 import moneycalculator.ui.MoneyDisplay;
@@ -18,12 +20,12 @@ public class SwingMoneyDisplay extends JPanel implements MoneyDisplay{
         this.updateUI();
     }
 
-    private PopupMenu amount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private Component amount() {
+        return new JLabel(String.valueOf(money.getAmount()));
     }
 
-    private PopupMenu currency() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private Component currency() {
+        return new JLabel(money.getCurrency().getCode());   
     }
     
 }
